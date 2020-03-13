@@ -3,6 +3,15 @@ import initRouteStyles from '../utils/init-route-styles';
 // This file is removed from the build in Ember < 3.6
 export function initialize(appInstance) {
   let router = appInstance.lookup('service:router');
+  
+  if(!router) {
+    router = (appInstance.lookup('service:-routing') || {}).router;
+  }
+  
+  if(!router) {
+    return;
+  }
+  
   router.on('routeDidChange', function({ to }) {
     if (likeRouteInfo(to)) {
       initRouteStyles(appInstance, nestedRouteNames(to));
